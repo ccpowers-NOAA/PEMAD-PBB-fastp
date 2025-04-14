@@ -26,8 +26,8 @@ process FASTP {
         tuple val(sampleID), file(reads)
 
     output:
-        path "${reads[0].simpleName}_trimmed.fastq.gz"
-        path "${reads[1].simpleName}_trimmed.fastq.gz"
+        path "${reads[0].simpleName}_trimmed.fastq.gz" into R1_trimmed
+        path "${reads[1].simpleName}_trimmed.fastq.gz" into R2_trimmed
 
     shell:
         '''
@@ -82,7 +82,7 @@ workflow QC {
     // channels
     reads = Channel.fromFilePairs("${params.raw_data_dir}/SRR*_R{1,2}.fastq.gz")
     PRE_FASTQC(reads)
-    FASTP(reads).set{R1_trimmed, R2_trimmed}
+    FASTP(reads)
     POST_FASTQC(R1_trimmed, R2_trimmed)
     MULTIQC(PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect(), 
             POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect())
