@@ -1,0 +1,23 @@
+#######
+# Intro
+#######
+
+This repo is designed to compare a simple workflow
+between snakemake and nextflow
+
+# Snakemake 
+
+To run snakemake, first setup your snakemake
+conda environment
+
+`mamba create -f envs/snakemake-8.20.3.yaml`
+
+The raw data can already be found in 00_reads
+
+Execute the pipeline interactively by running
+
+`snakemake -j1 --use-conda`
+
+or in the queue by running
+
+`sbatch snake_manager.sh`
