@@ -4,7 +4,8 @@ process {
   cpus = 1
   memory = '1 GB'
   time = '1h'
-  conda = "${projectDir}/envs/fastp-0.24.0.yaml"
+  conda = '/home/dmacguigan/.conda/envs/fastp-0.24.0'
+  //conda = "${projectDir}/envs/fastp-0.24.0.yaml"
 }
 
 // conda/mamba options
