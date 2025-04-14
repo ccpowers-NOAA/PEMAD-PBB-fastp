@@ -2,6 +2,8 @@
 
 process PRE_FASTQC {
     executor params.pre_fastqc.executor
+    executor params.pre_fastqc.executor
+
 
     publishDir "${launchDir}/${params.publishDir}/pre_fastqc", mode: 'copy'
 

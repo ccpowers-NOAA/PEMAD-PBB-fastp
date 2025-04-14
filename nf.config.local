@@ -7,6 +7,12 @@ process {
   conda = "${projectDir}/envs/fastp-0.24.0.yaml"
 }
 
+// conda/mamba options
+conda{
+    enabled = true
+    useMamba = true
+}
+
 // Pipeline parameters
 params {
     raw_data_dir = "${projectDir}/00_reads/"
