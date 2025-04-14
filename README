@@ -12,7 +12,7 @@ git clone https://github.com/ccpowers-NOAA/PEMAD-PBB-fastp.git
 cd PEMAD-PBB-fastp
 ```
 
-The raw data are also downloaded (`00_reads`).
+The raw data are downloaded as part of the repository (`00_reads`).
 
 # Snakemake 
 

@@ -9,7 +9,7 @@ process PRE_FASTQC {
 
     output:
         path "${sampleID}_R1_fastqc.{zip,html}", emit: R1_report
-        path "${sampleID}_R1_fastqc.{zip,html}", emit: R2_report
+        path "${sampleID}_R2_fastqc.{zip,html}", emit: R2_report
 
     shell:
         '''
@@ -47,7 +47,7 @@ process POST_FASTQC {
         path R2_trimmed
 
     output:
-        path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
+        path "${R1_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
         path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
 
     shell:
