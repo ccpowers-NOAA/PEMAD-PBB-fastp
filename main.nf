@@ -1,11 +1,8 @@
 // PROCESSES
 
 process PRE_FASTQC {
-    executor params.pre_fastqc.executor
-    executor params.pre_fastqc.executor
 
-
-    publishDir "${launchDir}/${params.publishDir}/pre_fastqc", mode: 'copy'
+    publishDir "${params.publishDir}/pre_fastqc", mode: 'copy'
 
     input:
         tuple val(sampleID), file(reads)
@@ -23,7 +20,7 @@ process PRE_FASTQC {
 
 process FASTP {
 
-    publishDir "${launchDir}/${params.publishDir}/fastp", mode: 'copy'
+    publishDir "${params.publishDir}/fastp", mode: 'copy'
 
     input:
         tuple val(sampleID), file(reads)
@@ -43,7 +40,7 @@ process FASTP {
 
 process POST_FASTQC {
 
-    publishDir "${launchDir}/${params.publishDir}/post_fastqc", mode: 'copy'
+    publishDir "${params.publishDir}/post_fastqc", mode: 'copy'
 
     input:
         path R1_trimmed
@@ -62,7 +59,7 @@ process POST_FASTQC {
 
 process MULTIQC {
 
-    publishDir "${launchDir}/${params.publishDir}/multiqc", mode: 'copy'
+    publishDir "${params.publishDir}/multiqc", mode: 'copy'
 
     input:
         path pre_reports
