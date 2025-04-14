@@ -1,44 +1,32 @@
+// general process options
 process {
   executor = 'slurm'
   queue = 'standard'
-  cpus = { opts.cpus }
-  memory = { opts.memory.GB * task.attempt }
+  cpus = 1
+  memory = '1 GB'
+  time = '1h'
+  conda = "${projectDir}/envs/fastp-0.24.0.yaml"
 }
 
 // Pipeline parameters
 params {
-    rawDir = '<<RAW_DIR>>'
-    publishDir = 'out'
-    minDepth = <<MIN_DEPTH>>
-    minAssemblyLength = 500
-    genetic_code = <<GENETIC_CODE>>
-    mitos_condaenv = 'mitos'
-    trnaScan_condaenv = 'trnascan-se'
+    raw_data_dir = "${projectDir}/00_reads/"
+    publishDir = 'nextflow_out'
     preprocess {
-        container = process.container
         executor = process.executor
     }
-    assemble {
+    pre_fastqc {
         maxRetries = 1
-        container = process.container
         executor = process.executor
     }
-    coverage {
-        cpus = 4
-        memory = 8
-        container = process.container
+    fastp {
+        memory = '2 GB'
         executor = process.executor
     }
-    annotate {
-        container = process.container
+    post_fastqc {
         executor = process.executor
     }
-    curate {
-        container = process.container
-        executor = process.executor
-    }
-    validate {
-        container = process.container
+    multiqc {
         executor = process.executor
     }
 }
