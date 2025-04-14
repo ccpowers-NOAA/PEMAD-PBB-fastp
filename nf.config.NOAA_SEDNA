@@ -6,7 +6,6 @@ process {
   memory = '1 GB'
   time = '1h'
   conda = "${projectDir}/envs/fastp-0.24.0.yaml"
-  publishDir = "${launchDir}/nextflow_out"
 }
 
 // conda/mamba options
@@ -18,7 +17,7 @@ conda{
 // Pipeline parameters
 params {
     raw_data_dir = "${projectDir}/00_reads/"
-    publishDir = 'nextflow_out'
+    publishDir = "${launchDir}/nextflow_out"
     preprocess {
         executor = process.executor
     }

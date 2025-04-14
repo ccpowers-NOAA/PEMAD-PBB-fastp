@@ -16,7 +16,7 @@ conda{
 // Pipeline parameters
 params {
     raw_data_dir = "${projectDir}/00_reads/"
-    publishDir = 'nextflow_out'
+    publishDir = "${launchDir}/nextflow_out"
     preprocess {
         executor = process.executor
     }
