@@ -1,0 +1,44 @@
+process {
+  executor = 'slurm'
+  queue = 'standard'
+  cpus = { opts.cpus }
+  memory = { opts.memory.GB * task.attempt }
+}
+
+// Pipeline parameters
+params {
+    rawDir = '<<RAW_DIR>>'
+    publishDir = 'out'
+    minDepth = <<MIN_DEPTH>>
+    minAssemblyLength = 500
+    genetic_code = <<GENETIC_CODE>>
+    mitos_condaenv = 'mitos'
+    trnaScan_condaenv = 'trnascan-se'
+    preprocess {
+        container = process.container
+        executor = process.executor
+    }
+    assemble {
+        maxRetries = 1
+        container = process.container
+        executor = process.executor
+    }
+    coverage {
+        cpus = 4
+        memory = 8
+        container = process.container
+        executor = process.executor
+    }
+    annotate {
+        container = process.container
+        executor = process.executor
+    }
+    curate {
+        container = process.container
+        executor = process.executor
+    }
+    validate {
+        container = process.container
+        executor = process.executor
+    }
+}
