@@ -21,12 +21,9 @@ rule pre_fastqc:
     shell:
         """
         mkdir -p log
-        mkdir -p pretrimming
         fastqc 00_reads/{wildcards.sample}
         filename={wildcards.sample}
         fastqc 00_reads/${{filename/R1.fastq.gz/R2.fastq.gz}}
-        mv 00_reads/*html pretrimming
-        mv 00_reads/*html pretrimming
         touch {output}
         """
 
@@ -63,12 +60,9 @@ rule post_fastqc:
         mem_mb=1000
     shell:
         """
-        mkdir -p posttrimming
         fastqc 01_trimmed/{wildcards.sample}_trimmed.fastq.gz
         filename={wildcards.sample}
         fastqc 01_trimmed/${{filename/R1.fastq.gz/R2.fastq.gz}}_trimmed.fastq.gz
-        mv 00_reads/*html posttrimming
-        mv 00_reads/*html posttrimming
         touch {output}
         """
 
@@ -85,6 +79,14 @@ rule multiqc:
         mem_mb=1000
     shell:
         """
+        mkdir -p pretrimming
+        mv 00_reads/*html pretrimming
+        mv 00_reads/*zip pretrimming
+
+        mkdir -p posttrimming
+        mv 01_trimmed/*html posttrimming
+        mv 01_trimmed/*zip posttrimming
+
         multiqc pretrimming -n pretrimming.html
         multiqc posttrimming -n posttrimming.html
         touch {output}
