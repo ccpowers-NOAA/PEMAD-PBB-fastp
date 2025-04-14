@@ -9,15 +9,13 @@ process PRE_FASTQC {
         tuple val(sampleID), file(reads)
 
     output:
-        path "${sampleID}_R1_fastqc.zip"
-        path "${sampleID}_R1_fastqc.html"
-        path "${sampleID}_R2_fastqc.zip"
-        path "${sampleID}_R2_fastqz.html"
+        path "${sampleID}_R1_fastqc.{zip,html}", emit: R1_report
+        path "${sampleID}_R1_fastqc.{zip,html}", emit: R2_report
 
     shell:
         '''
-        fastqc ${reads[0]}
-        fastqc ${reads[1]}
+        fastqc !{reads[0]}
+        fastqc !{reads[1]}
         '''
 }
 
@@ -34,10 +32,10 @@ process FASTP {
 
     shell:
         '''
-        fastp -i ${reads[0]} \
-            -I ${reads[1]} \
-            -o ${reads[0].simpleName}_trimmed.fastq.gz \
-            -O ${reads[1].simpleName}_trimmed.fastq.gz
+        fastp -i !{reads[0]} \
+            -I !{reads[1]} \
+            -o !{reads[0].simpleName}_trimmed.fastq.gz \
+            -O !{reads[1].simpleName}_trimmed.fastq.gz
         '''
 }
 
@@ -50,15 +48,13 @@ process POST_FASTQC {
         path R2_trimmed
 
     output:
-        path "${R1_trimmed.simpleName}_fastqc.zip"
-        path "${R1_trimmed.simpleName}_fastqc.html"
-        path "${R2_trimmed.simpleName}_fastqc.zip"
-        path "${R2_trimmed.simpleName}_fastqc.html"
+        path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
+        path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
 
     shell:
         '''
-        fastqc ${R1_trimmed}
-        fastqc ${R2_trimmed}
+        fastqc !{R1_trimmed}
+        fastqc !{R2_trimmed}
         '''
 }
 
@@ -66,14 +62,18 @@ process MULTIQC {
 
     publishDir "${launchDir}/${params.publishDir}/multiqc", mode: 'copy'
 
+    input:
+        path pre_reports
+        path post_reports
+
     output:
         path "pretrimming.html"
         path "posttrimming.html"
 
     shell:
         '''
-        multiqc ${launchDir}/${params.publishDir}/pre_fastqc -n pretrimming.html
-        multiqc ${launchDir}/${params.publishDir}/post_fastqc -n posttrimming.html
+        multiqc !{pre_reports} -n pretrimming.html
+        multiqc !{post_reports} -n posttrimming.html
         '''
 }
 
@@ -86,5 +86,6 @@ workflow QC {
     PRE_FASTQC(reads)
     FASTP(reads)
     POST_FASTQC(FASTP.out.R1_trimmed, FASTP.out.R2_trimmed)
-    MULTIQC()
+    MULTIQC(PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect(), 
+            POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect())
 }
