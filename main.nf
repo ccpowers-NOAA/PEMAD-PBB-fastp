@@ -26,7 +26,7 @@ process FASTP {
     publishDir "${launchDir}/${params.publishDir}/fastp", mode: 'copy'
 
     input:
-        path input_reads
+        tuple val(sampleID), file(reads)
 
     output:
         path "${reads[0].simpleName}_trimmed.fastq.gz", emit: R1_trimmed
