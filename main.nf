@@ -43,16 +43,16 @@ process POST_FASTQC {
     publishDir "${params.publishDir}/post_fastqc", mode: 'copy'
 
     input:
-        tuple path(R1_trimmed), path(R2_trimmed)
+        tuple path(trimmed_R1), path(trimmed_R2)
 
     output:
-        path "${R1_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
-        path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
+        path "${trimmed_reads[0].simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
+        path "${trimmed_reads[1].simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
 
     shell:
         '''
-        fastqc !{R1_trimmed}
-        fastqc !{R2_trimmed}
+        fastqc !{trimmed_R1}
+        fastqc !{trimmed_R2}
         '''
 }
 
