@@ -1,7 +1,3 @@
-#######
-# Intro
-#######
-
 This repo is designed to compare a simple workflow
 between snakemake and nextflow.
 
@@ -14,7 +10,7 @@ cd PEMAD-PBB-fastp
 
 The raw data are downloaded as part of the repository (`00_reads`).
 
-# Snakemake 
+## Snakemake 
 
 To run snakemake, first setup your snakemake
 conda environment
@@ -29,7 +25,7 @@ or in the queue by running
 
 `sbatch snake_manager.sh`
 
-# Nextflow
+## Nextflow
 
 To run nextflow, we can use SEDNA's nextflow
 conda environment
@@ -43,5 +39,3 @@ Execute the pipeline interactively by running
 or in the queue by running
 
 `sbatch nextflow_job.sh`
-
-Results will be written to the directory wh

@@ -43,7 +43,7 @@ process POST_FASTQC {
     publishDir "${params.publishDir}/post_fastqc", mode: 'copy'
 
     input:
-        tuple path(trimmed_R1), path(trimmed_R2)
+        tuple path(R1_trimmed), path(R2_trimmed)
 
     output:
         path "${R1_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
