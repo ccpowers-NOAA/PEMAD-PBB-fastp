@@ -26,8 +26,13 @@ process FASTP {
         tuple val(sampleID), file(reads)
 
     output:
+<<<<<<< Updated upstream
         path "${reads[0].simpleName}_trimmed.fastq.gz", emit: R1_trimmed
         path "${reads[1].simpleName}_trimmed.fastq.gz", emit: R2_trimmed
+=======
+        tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
+              path("${reads[1].simpleName}_trimmed.fastq.gz"), emit: trimmed_reads
+>>>>>>> Stashed changes
 
     shell:
         '''
@@ -83,7 +88,11 @@ workflow QC {
     reads = Channel.fromFilePairs("${params.raw_data_dir}/SRR*_R{1,2}.fastq.gz")
     PRE_FASTQC(reads)
     FASTP(reads)
+<<<<<<< Updated upstream
     POST_FASTQC(FASTP.out.R1_trimmed, FASTP.out.R2_trimmed)
+=======
+    POST_FASTQC(FASTP.out.trimmed_reads)
+>>>>>>> Stashed changes
     MULTIQC(PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect(), 
             POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect())
 }
