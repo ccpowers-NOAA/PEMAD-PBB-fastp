@@ -27,7 +27,7 @@ params {
         executor = process.executor
     }
     fastp {
-        memory = '2 GB'
+        memory = '8 GB'
         executor = process.executor
     }
     post_fastqc {

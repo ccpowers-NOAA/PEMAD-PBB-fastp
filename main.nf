@@ -20,14 +20,16 @@ process PRE_FASTQC {
 
 process FASTP {
 
+    memory "${params.fastp.memory}"
+
     publishDir "${params.publishDir}/fastp", mode: 'copy'
 
     input:
         tuple val(sampleID), file(reads)
 
     output:
-        tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
-              path("${reads[1].simpleName}_trimmed.fastq.gz"), emit: trimmed_reads
+        path "${reads[0].simpleName}_trimmed.fastq.gz", emit: R1_trimmed
+        path "${reads[1].simpleName}_trimmed.fastq.gz", emit: R2_trimmed
 
     shell:
         '''
@@ -43,16 +45,17 @@ process POST_FASTQC {
     publishDir "${params.publishDir}/post_fastqc", mode: 'copy'
 
     input:
-        tuple path(trimmed_R1), path(trimmed_R2)
+        path R1_trimmed
+        path R2_trimmed
 
     output:
-        path "${trimmed_reads[0].simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
-        path "${trimmed_reads[1].simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
+        path "${R1_trimmed.simpleName}_fastqc.{zip,html}", emit: R1_trimmed_report
+        path "${R2_trimmed.simpleName}_fastqc.{zip,html}", emit: R2_trimmed_report
 
     shell:
         '''
-        fastqc !{trimmed_R1}
-        fastqc !{trimmed_R2}
+        fastqc !{R1_trimmed}
+        fastqc !{R2_trimmed}
         '''
 }
 
@@ -84,8 +87,8 @@ workflow QC {
     // run FASTQC and trimming
     PRE_FASTQC(reads)
     FASTP(reads)
-    POST_FASTQC(FASTP.out.trimmed_reads)
-    
+    POST_FASTQC(FASTP.out.R1_trimmed, FASTP.out.R2_trimmed)
+
     // collect FASTQC reports
     pre_reports = PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect()
     post_reports = POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect()
