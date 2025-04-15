@@ -20,6 +20,8 @@ process PRE_FASTQC {
 
 process FASTP {
 
+    memory "${params.fastp.memory}"
+
     publishDir "${params.publishDir}/fastp", mode: 'copy'
 
     input:
