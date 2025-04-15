@@ -27,7 +27,7 @@ process FASTP {
 
     output:
         tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
-              path("${reads[1].simpleName}_trimmed.fastq.gz") into trimmed_reads
+              path("${reads[1].simpleName}_trimmed.fastq.gz")
 
     shell:
         '''
