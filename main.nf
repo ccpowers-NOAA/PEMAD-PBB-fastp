@@ -26,8 +26,8 @@ process FASTP {
         tuple val(sampleID), file(reads)
 
     output:
-        tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
-              path("${reads[1].simpleName}_trimmed.fastq.gz"), emit: trimmed_reads
+        tuple path("*_R1_trimmed.fastq.gz"),
+              path("*_R2_trimmed.fastq.gz"), emit: trimmed_reads
 
     shell:
         '''
