@@ -18,9 +18,10 @@ conda environment
 `mamba env create -f envs/snakemake-8.20.3.yaml -n snakemake-8.20.3.yaml`
 
 Execute the pipeline interactively by running
-
-`mamba activate snakemake-8.20.3.yaml`
-`snakemake -j1 --use-conda`
+```
+mamba activate snakemake-8.20.3.yaml
+snakemake -j1 --use-conda
+```
 
 or in the queue by running
 
