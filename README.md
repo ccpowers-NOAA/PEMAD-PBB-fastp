@@ -39,5 +39,3 @@ Execute the pipeline interactively by running
 or in the queue by running
 
 `sbatch nextflow_job.sh`
-
-Results will be written to the directory wh

@@ -27,7 +27,7 @@ process FASTP {
 
     output:
         tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
-              path("${reads[1].simpleName}_trimmed.fastq.gz")
+              path("${reads[1].simpleName}_trimmed.fastq.gz"), emit: trimmed_reads
 
     shell:
         '''
@@ -80,8 +80,16 @@ process MULTIQC {
 workflow QC {
     // channels
     reads = Channel.fromFilePairs("${params.raw_data_dir}/SRR*_R{1,2}.fastq.gz")
+
+    // run FASTQC and trimming
     PRE_FASTQC(reads)
-    FASTP(reads) | POST_FASTQC
-    MULTIQC(PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect(), 
-            POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect())
+    FASTP(reads)
+    POST_FASTQC(FASTP.out.trimmed_reads)
+    
+    // collect FASTQC reports
+    pre_reports = PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect()
+    post_reports = POST_FASTQC.out.R1_trimmed_report.mix(POST_FASTQC.out.R2_trimmed_report).collect()
+
+    // run MULTIQC
+    MULTIQC(pre_reports, post_reports)
 }
