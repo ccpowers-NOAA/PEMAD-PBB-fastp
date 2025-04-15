@@ -26,8 +26,8 @@ process FASTP {
         tuple val(sampleID), file(reads)
 
     output:
-        tuple path("*_R1_trimmed.fastq.gz"),
-              path("*_R2_trimmed.fastq.gz"), emit: trimmed_reads
+        tuple path("${reads[0].simpleName}_trimmed.fastq.gz"),
+              path("${reads[1].simpleName}_trimmed.fastq.gz")
 
     shell:
         '''
@@ -83,8 +83,8 @@ workflow QC {
 
     // run FASTQC and trimming
     PRE_FASTQC(reads)
-    FASTP(reads)
-    POST_FASTQC(FASTP.out.trimmed_reads)
+    trimmed_reads = FASTP(reads)
+    POST_FASTQC(trimmed_reads)
     
     // collect FASTQC reports
     pre_reports = PRE_FASTQC.out.R1_report.mix(PRE_FASTQC.out.R2_report).collect()
