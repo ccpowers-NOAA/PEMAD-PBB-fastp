@@ -15,10 +15,11 @@ The raw data are downloaded as part of the repository (`00_reads`).
 To run snakemake, first setup your snakemake
 conda environment
 
-`mamba create -f envs/snakemake-8.20.3.yaml`
+`mamba env create -f envs/snakemake-8.20.3.yaml -n snakemake-8.20.3.yaml`
 
 Execute the pipeline interactively by running
 
+`mamba activate snakemake-8.20.3.yaml`
 `snakemake -j1 --use-conda`
 
 or in the queue by running
