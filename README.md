@@ -17,6 +17,10 @@ conda environment
 
 `mamba env create -f envs/snakemake-8.20.3.yaml -n snakemake-8.20.3.yaml`
 
+and install the following dependency
+
+`pip install snakemake-executor-plugin-slurm --user`
+
 Execute the pipeline interactively by running
 ```
 mamba activate snakemake-8.20.3.yaml
