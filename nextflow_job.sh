@@ -7,4 +7,4 @@
 source ~/.bashrc
 mamba activate nextflow-24.04.4
 
-nextflow -c nf.config.NOAA_SEDNA run main.nf -entry QC
+nextflow -c nf.config.NOAA_SEDNA run main.nf -entry QC -with-dag flowchart.png
