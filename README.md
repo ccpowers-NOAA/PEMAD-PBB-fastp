@@ -15,11 +15,19 @@ The raw data are downloaded as part of the repository (`00_reads`).
 To run snakemake, first setup your snakemake
 conda environment
 
-`mamba create -f envs/snakemake-8.20.3.yaml`
+`mamba env create -f envs/snakemake-8.20.3.yaml -n snakemake-8.20.3`
+
+and install the following dependency
+
+`pip install snakemake-executor-plugin-slurm --user`
 
 Execute the pipeline interactively by running
-
-`snakemake -j1 --use-conda`
+```
+# Before running anything interactively, get off the head node!
+srun -p standard -c 2 --mem=5GB --pty /bin/bash
+mamba activate snakemake-8.20.3.yaml
+snakemake -j1 --use-conda
+```
 
 or in the queue by running
 
@@ -30,7 +38,11 @@ or in the queue by running
 To run nextflow, we can use SEDNA's nextflow
 conda environment
 
-`mamba activate nextflow-24.04.4`
+```
+# Before running anything interactively, get off the head node!
+srun -p standard -c 2 --mem=5GB --pty /bin/bash
+mamba activate nextflow-24.04.4
+```
 
 Execute the pipeline interactively by running
 

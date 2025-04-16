@@ -79,15 +79,23 @@ rule multiqc:
         mem_mb=1000
     shell:
         """
-        mkdir -p pretrimming
-        mv 00_reads/*html pretrimming
-        mv 00_reads/*zip pretrimming
+        mkdir -p snakemake_out/pretrimming
+        mv 00_reads/*html snakemake_out/pretrimming
+        mv 00_reads/*zip snakemake_out/pretrimming
 
-        mkdir -p posttrimming
-        mv 01_trimmed/*html posttrimming
-        mv 01_trimmed/*zip posttrimming
+        mkdir -p snakemake_out/posttrimming
+        mv 01_trimmed/*html snakemake_out/posttrimming
+        mv 01_trimmed/*zip snakemake_out/posttrimming
+
+        mv 01_trimmed snakemake_out
+
+        cd snakemake_out
 
         multiqc pretrimming -n pretrimming.html
         multiqc posttrimming -n posttrimming.html
+
+        mv ../fastp* .
+        cd ..
+
         touch {output}
         """
