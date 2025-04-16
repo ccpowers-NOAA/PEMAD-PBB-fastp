@@ -46,9 +46,7 @@ mamba activate nextflow-24.04.4
 
 Execute the pipeline interactively by running
 
-```
-nextflow -c nf.config.NOAA_SEDNA run main.nf -entry QC
-```
+`nextflow -c nf.config.NOAA_SEDNA run main.nf -entry QC -with-dag flowchart.png`
 
 or in the queue by running
 
