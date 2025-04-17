@@ -51,3 +51,19 @@ Execute the pipeline interactively by running
 or in the queue by running
 
 `sbatch nextflow_job.sh`
+
+We have provided two Nextflow config files. `nf.config.NOAA_SEDNA` will submit jobs
+to the SLURM scheduler, while `nf.config.local` will only use local compute resources
+(i.e. the CPUs and memory in an interactive session).
+
+In the config file, there are two ways to make Nextflow use conda. You can either build a new, temporary conda environment from our provided `fastp-0.24.0.yaml`. This may take several minutes.
+
+```
+conda = "${projectDir}/envs/fastp-0.24.0.yaml"
+```
+
+Or you can have Nextflow use an existing conda environment.
+
+```
+conda = '/home/dmacguigan/.conda/envs/fastp-0.24.0'
+```
